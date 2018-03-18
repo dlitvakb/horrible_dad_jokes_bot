@@ -1,0 +1,21 @@
+service: horrible-dad-jokes-bot
+
+provider:
+    name: aws
+    runtime: python3.6
+    stage: dev
+    region: us-east-1
+    environment:
+        CF_SPACE_ID: ${env:CF_SPACE_ID}
+        CF_CMA_TOKEN: ${env:CF_CMA_TOKEN}
+        CF_CDA_TOKEN: ${env:CF_CDA_TOKEN}
+        TG_BOT_TOKEN: ${env:TG_BOT_TOKEN}
+
+functions:
+    post:
+        handler: bot.endpoint_dispatcher
+        events:
+            - http:
+                path: telegram
+                method: post
+                cors: true

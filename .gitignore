@@ -1,0 +1,5 @@
+*.pyc
+.env
+.serverless
+__pycache__
+vendored
