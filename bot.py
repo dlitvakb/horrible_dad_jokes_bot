@@ -11,6 +11,7 @@ from contentful import Client as CDA
 
 from joke import Joke
 from user import User
+from broadcast import Broadcast
 
 BASE_URL = "https://api.telegram.org/bot{0}".format(os.environ['TG_BOT_TOKEN'])
 
@@ -28,6 +29,7 @@ def endpoint_dispatcher(event, context):
     registered_functions = {
         '/start': start,
         '/tellmeajoke': tell_me_a_joke,
+        '/createbroadcast': create_broadcast,
         '/help': help_
     }
 
@@ -80,6 +82,39 @@ def tell_me_a_joke(_message, _data, chat_id):
     )
     send_message(response, chat_id)
 
+def admin_only(fn):
+    def authenticated(message, data, chat_id):
+        if int(chat_id) == int(os.environ['TG_ADMIN_ID']):
+            fn(message, data, chat_id)
+            return {"statusCode": 200}
+        send_message("You're not authorized for this operation", chat_id)
+        return {"statusCode": 200}
+    return authenticated
+
+@admin_only
+def create_broadcast(message, _data, chat_id):
+    identifier = None
+    content = None
+    joke = None
+
+    message = message.replace('/createbroadcast ', '')
+    parts = message.split(', ')
+
+    if len(parts) < 2:
+        return send_message("Cannot create Broadcast", chat_id)
+
+    for index, part in enumerate(parts):
+        if index == 0:
+            identifier = part
+        elif index == 1:
+            content = part
+        elif index == 2:
+            joke = json.loads(part)
+
+    Broadcast(identifier, content, joke).save()
+
+    send_message("Broadcast saved!", chat_id)
+
 def broadcast(event, context):
     webhook = json.loads(event['body'])
 
@@ -94,7 +129,7 @@ def broadcast(event, context):
 
     response = message.content
 
-    if 'joke' in message.fields():
+    if 'joke' in message.fields() and message.joke is not None:
         response += "\n\nAlso, we have a nice joke for you:\n{0}\n\nSource: {1}".format(
             message.joke.content,
             message.joke.source
