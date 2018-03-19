@@ -1,10 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
-from loader import load_env
 from joke import Joke
 
-
-load_env()
 
 class TwitterScraper(object):
     BASE_URL = 'https://twitter.com/'
@@ -57,3 +54,47 @@ class TwitterScraper(object):
             self.BASE_URL,
             self.user
         ))
+
+
+class ICanHazDadJokeScraper(object):
+    BASE_URL = 'https://icanhazdadjoke.com/'
+    SOURCE = 'iCanHazDadJoke'
+
+    def scrape(self):
+        for joke in self._jokes():
+            Joke(
+                self._joke_ref(joke),
+                self._joke_content(joke),
+                self._joke_url(joke),
+                self.SOURCE
+            ).save()
+
+    def _joke_ref(self, joke):
+        return "{0} - {1}".format(self.BASE_URL, joke['id'])
+
+    def _joke_content(self, joke):
+        return joke['joke']
+
+    def _joke_url(self, joke):
+        return "{0}/j/{1}".format(self.BASE_URL, joke['id'])
+
+    def _jokes(self):
+        jokes = []
+        next_page = 1
+
+        while next_page is not None:
+            results = requests.get(
+                '{0}/search?page={1}'.format(self.BASE_URL, next_page),
+                headers={'accept': 'application/json'}
+            ).json()
+
+            jokes += results['results']
+
+            if results['next_page'] != next_page:
+                next_page = results['next_page']
+            else:
+                next_page = None
+
+        return jokes
+
+

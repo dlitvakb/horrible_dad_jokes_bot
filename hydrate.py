@@ -1,7 +1,8 @@
-from scraper import TwitterScraper
+from scraper import TwitterScraper, ICanHazDadJokeScraper
 
 scrapers = [
-    TwitterScraper('baddadjokes')
+    TwitterScraper('baddadjokes'),
+    ICanHazDadJokeScraper()
 ]
 
 if __name__ == '__main__':
