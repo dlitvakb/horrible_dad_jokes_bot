@@ -12,10 +12,17 @@ provider:
         TG_BOT_TOKEN: ${env:TG_BOT_TOKEN}
 
 functions:
-    post:
+    telegram_dispatcher:
         handler: bot.endpoint_dispatcher
         events:
             - http:
                 path: telegram
+                method: post
+                cors: true
+    webhook_handler:
+        handler: bot.broadcast
+        events:
+            - http:
+                path: webhook
                 method: post
                 cors: true

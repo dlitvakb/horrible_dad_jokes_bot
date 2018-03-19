@@ -7,6 +7,8 @@ from loader import load_env
 load_env()
 
 import requests
+from contentful import Client as CDA
+
 from joke import Joke
 from user import User
 
@@ -77,3 +79,29 @@ def tell_me_a_joke(_message, _data, chat_id):
         joke.source
     )
     send_message(response, chat_id)
+
+def broadcast(event, context):
+    webhook = json.loads(event['body'])
+
+    # We are only interested in broadcast messages
+    if webhook['sys']['contentType']['sys']['id'] != 'broadcast':
+        return {"statusCode": 200}
+
+    cda = CDA(os.environ['CF_SPACE_ID'], os.environ['CF_CDA_TOKEN'])
+    broadcast_id = webhook['sys']['id']
+
+    message = cda.entry(broadcast_id, {'include': 2})
+
+    response = message.content
+
+    if 'joke' in message.fields():
+        response += "\n\nAlso, we have a nice joke for you:\n{0}\n\nSource: {1}".format(
+            message.joke.content,
+            message.joke.source
+        )
+
+    users = User.all()
+    for user in users:
+        send_message(response, user.chat_id)
+
+    return {"statusCode": 200}
