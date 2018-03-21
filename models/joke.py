@@ -1,4 +1,5 @@
-from base_model import BaseModel
+from .base_model import BaseModel
+
 
 class Joke(BaseModel):
     __CONTENT_TYPE__ = 'joke'

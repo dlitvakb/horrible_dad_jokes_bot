@@ -13,14 +13,14 @@ provider:
 
 functions:
     telegram_dispatcher:
-        handler: bot.endpoint_dispatcher
+        handler: handlers.endpoint_dispatcher
         events:
             - http:
                 path: telegram
                 method: post
                 cors: true
     webhook_handler:
-        handler: bot.broadcast
+        handler: handlers.broadcast
         events:
             - http:
                 path: webhook

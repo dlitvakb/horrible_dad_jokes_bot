@@ -13,15 +13,26 @@ class BaseModel(object):
     @classmethod
     def find(klass, field):
         cda = CDA(os.environ['CF_SPACE_ID'], os.environ['CF_CDA_TOKEN'])
-        return cda.entries({
-            'content_type': klass.__CONTENT_TYPE__,
-            'fields.{0}'.format(klass.__SEARCH_FIELD__): field
-        })[0]
+        try:
+            return cda.entries({
+                'content_type': klass.__CONTENT_TYPE__,
+                'fields.{0}'.format(klass.__SEARCH_FIELD__): field
+            })[0]
+        except:
+            return None
 
     @classmethod
     def all(klass):
         cda = CDA(os.environ['CF_SPACE_ID'], os.environ['CF_CDA_TOKEN'])
         return cda.entries({'content_type': klass.__CONTENT_TYPE__})
+
+    @classmethod
+    def delete(self, entry):
+        cma = CMA(os.environ['CF_CMA_TOKEN'])
+        entries_proxy = cma.entries(os.environ['CF_SPACE_ID'])
+
+        entry = entries_proxy.find(entry.id)
+        return entry.unpublish().delete()
 
     def save(self):
         cma = CMA(os.environ['CF_CMA_TOKEN'])
