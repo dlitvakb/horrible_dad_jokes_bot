@@ -90,8 +90,7 @@ curl --request POST --url "https://api.telegram.org/bot$TG_BOT_TOKEN/setWebhook"
 * Set up your Contentful hook:
 
 Go to `https://app.contentful.com/spaces/<YOUR_SPACE_ID>/settings/webhooks` (replace `<YOUR_SPACE_ID>` with the Space ID in your configuration), and create a webhook indicating your `webhook` endpoint from the `serverless deploy` command as the URL.
-
-> On higher Contentful plans, you can specify which Webhooks to trigger, if you can enable this, set it for `Entry.publish`.
+Then select `Entry.publish` as the only webhook to trigger.
 
 * Enjoy!
 
