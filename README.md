@@ -2,6 +2,12 @@
 
 This is a [Telegram](https://telegram.org) bot that tells very terrible dad jokes, written for example purposes.
 
+You can check it out [here](https://t.me/horrible_dad_jokes_bot).
+
+It looks like this:
+
+![Dad Jokes Bot Image](https://i.imgur.com/8ngW8ay.png)
+
 It uses the following services:
 
 * [Contentful](https://www.contentful.com) - For jokes and broadcasted messages storage
