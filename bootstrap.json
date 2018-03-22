@@ -1,0 +1,77 @@
+{
+  "version": 3,
+  "contentTypes": [
+    {
+      "id": "broadcast",
+      "name": "Broadcast",
+      "displayField": "identifier",
+      "fields": [
+        {
+          "id": "identifier",
+          "name": "Identifier",
+          "type": "Symbol"
+        },
+        {
+          "id": "content",
+          "name": "Content",
+          "type": "Text"
+        },
+        {
+          "id": "joke",
+          "name": "Joke",
+          "type": "Link",
+          "linkType": "Entry"
+        }
+      ]
+    },
+    {
+      "id": "joke",
+      "name": "Joke",
+      "displayField": "title",
+      "fields": [
+        {
+          "id": "title",
+          "name": "Title",
+          "type": "Symbol"
+        },
+        {
+          "id": "content",
+          "name": "Content",
+          "type": "Text"
+        },
+        {
+          "id": "source",
+          "name": "Source",
+          "type": "Symbol"
+        },
+        {
+          "id": "author",
+          "name": "Author",
+          "type": "Symbol"
+        },
+        {
+          "id": "image",
+          "name": "Image",
+          "type": "Link",
+          "linkType": "Asset"
+        }
+      ]
+    },
+    {
+      "id": "registeredUser",
+      "name": "RegisteredUser",
+      "fields": [
+        {
+          "id": "chatId",
+          "name": "Chat ID",
+          "type": "Integer"
+        }
+      ]
+    }
+  ],
+  "assets": [
+
+  ],
+  "entries": {
+  }
+}
