@@ -6,7 +6,7 @@ contentful==1.6.0
 contentful-management==1.5.2
 decorator==4.2.1
 idna==2.6
-ipython==6.2.1
+ipython==7.16.3
 ipython-genutils==0.2.0
 jedi==0.11.1
 parso==0.1.1
